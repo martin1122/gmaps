@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
   <meta charset="utf-8">
   <title>GMaps.js &mdash; Basic</title>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
@@ -11,10 +11,11 @@
   <script type="text/javascript">
     var map;
     $(document).ready(function(){
+	
       map = new GMaps({
         el: '#map',
-        lat: -12.043333,
-        lng: -77.028333,
+        lat: 23.583234,
+        lng: 120.5825975,
         zoomControl : true,
         zoomControlOpt: {
             style : 'SMALL',
@@ -24,26 +25,45 @@
         streetViewControl : false,
         mapTypeControl: false,
         overviewMapControl: false
+		
       });
+	        map.getElevations({
+        locations : [[23.583234,120.5825975]],
+          callback : function (result, status){
+          if (status == google.maps.ElevationStatus.OK) {
+            for (var i in result){
+             map.addMarker({
+              lat: result[i].location.lat(),
+              lng: result[i].location.lng(),
+              title: 'Marker with InfoWindow',
+              infoWindow: {
+                content: '<p>The elevation is '+result[i].elevation+' in meters</p>'
+              }
+            });
+           }
+          }
+        }
+      });  
     });
+	
   </script>
-</head>
-<body>
-  <h1>GMaps.js &mdash; Basic</h1>
-  <div class="row">
+  </head>
+  <body>
+<h1>GMaps.js &mdash; Basic</h1>
+<div class="row">
     <div class="span11">
-      <div id="map"></div>
-    </div>
+    <div id="map"></div>
+  </div>
     <div class="span6">
-      <p>Using GMaps.js is as easy as:</p>
-      <pre>new GMaps({
+    <p>Using GMaps.js is as easy as:</p>
+    <pre>new GMaps({
   el: '#map',
   lat: -12.043333,
   lng: -77.028333
 });</pre>
-      <p>You must define <strong>container ID</strong>, <strong>latitude</strong> and <strong>longitude</strong> of the map's center.</p>
-      <p><span class="label notice">Note: </span>You also can define <strong>zoom</strong>, <strong>width</strong> and <strong>height</strong>. By default, zoom is 15. Width and height in a CSS class will replace these values.</p>
-    </div>
+    <p>You must define <strong>container ID</strong>, <strong>latitude</strong> and <strong>longitude</strong> of the map's center.</p>
+    <p><span class="label notice">Note: </span>You also can define <strong>zoom</strong>, <strong>width</strong> and <strong>height</strong>. By default, zoom is 15. Width and height in a CSS class will replace these values.</p>
+  </div>
   </div>
 </body>
 </html>
